@@ -1,0 +1,45 @@
+# Gradle
+.gradle/
+build/
+*.apk
+*.aar
+*.jks
+
+# Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+*.apk
+.DS_Store
+/.idea
+/captures
+*.log
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# IDE
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Distribution / production
+dist/
+build/
+*.jar
+
+# Misc
+.env
+.env.local
+.env.*.local

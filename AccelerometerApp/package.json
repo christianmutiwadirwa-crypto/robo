@@ -1,0 +1,28 @@
+{
+  "name": "accelerometer-server",
+  "version": "1.0.0",
+  "description": "Node.js backend server for receiving accelerometer data from Android app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "npm install && npm start",
+    "test": "curl http://localhost:3000/status"
+  },
+  "keywords": [
+    "accelerometer",
+    "bluetooth",
+    "android",
+    "iot",
+    "sensor",
+    "data-streaming"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

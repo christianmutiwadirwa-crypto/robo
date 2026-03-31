@@ -1,0 +1,49 @@
+# Android
+AccelerometerApp/.gradle/
+AccelerometerApp/build/
+AccelerometerApp/app/build/
+AccelerometerApp/.idea/
+*.iml
+*.apk
+*.ap_
+*.xapk
+*.zip
+local.properties
+AccelerometerApp/local.properties
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# IDE
+.vscode/
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Build outputs
+dist/
+out/
+
+# Signing files
+keystore.properties
+*.keystore
+*.jks
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Testing
+coverage/
+test-results/
+
+# OS
+.DS_Store
+Thumbs.db

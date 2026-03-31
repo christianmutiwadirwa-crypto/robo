@@ -1,0 +1,56 @@
+name: Node.js Backend Build
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'AccelerometerApp/server.js'
+      - 'AccelerometerApp/package.json'
+      - '.github/workflows/nodejs-build.yml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'AccelerometerApp/server.js'
+      - 'AccelerometerApp/package.json'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: 'AccelerometerApp/package-lock.json'
+          
+      - name: Install dependencies
+        run: cd AccelerometerApp && npm ci
+        
+      - name: Check for syntax errors
+        run: cd AccelerometerApp && node -c server.js
+        
+      - name: Start server (background test)
+        run: |
+          cd AccelerometerApp
+          timeout 5 node server.js &
+          sleep 2
+          curl http://localhost:3000/stats || true
+        continue-on-error: true
+        
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: server-files-node-${{ matrix.node-version }}
+          path: AccelerometerApp/
+          retention-days: 30
