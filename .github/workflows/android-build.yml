@@ -40,14 +40,11 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x AccelerometerApp/gradlew
         
-      - name: Build debug APK
-        run: cd AccelerometerApp && ./gradlew build
-        
-      - name: Build release APK
-        run: cd AccelerometerApp && ./gradlew assembleRelease
-        
-      - name: Run unit tests
-        run: cd AccelerometerApp && ./gradlew test
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          build-root-directory: AccelerometerApp
+          arguments: build assembleRelease test
         
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
