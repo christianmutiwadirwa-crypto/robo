@@ -46,17 +46,8 @@ jobs:
           mkdir -p gradle/wrapper
           cd gradle/wrapper
           
-          # Download gradle 8.2 distribution
-          wget -q https://services.gradle.org/distributions/gradle-8.2-all.zip
-          
-          # Extract only the gradle-wrapper.jar
-          unzip -q gradle-8.2-all.zip "gradle-8.2/gradle/wrapper/gradle-wrapper.jar"
-          
-          # Copy to current location
-          cp gradle-8.2/gradle/wrapper/gradle-wrapper.jar .
-          
-          # Cleanup
-          rm -rf gradle-8.2 gradle-8.2-all.zip
+          # Download gradle-wrapper.jar directly from gradle distribution mirror
+          curl -s -L -o gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.2.0/gradle/wrapper/gradle-wrapper.jar
           
           cd ../../..
         
