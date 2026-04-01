@@ -40,6 +40,26 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x AccelerometerApp/gradlew
         
+      - name: Download gradle-wrapper.jar
+        run: |
+          cd AccelerometerApp
+          mkdir -p gradle/wrapper
+          cd gradle/wrapper
+          
+          # Download gradle 8.2 distribution
+          wget -q https://services.gradle.org/distributions/gradle-8.2-all.zip
+          
+          # Extract only the gradle-wrapper.jar
+          unzip -q gradle-8.2-all.zip "gradle-8.2/gradle/wrapper/gradle-wrapper.jar"
+          
+          # Copy to current location
+          cp gradle-8.2/gradle/wrapper/gradle-wrapper.jar .
+          
+          # Cleanup
+          rm -rf gradle-8.2 gradle-8.2-all.zip
+          
+          cd ../../..
+        
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
