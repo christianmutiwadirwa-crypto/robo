@@ -40,17 +40,6 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x AccelerometerApp/gradlew
         
-      - name: Download gradle-wrapper.jar
-        run: |
-          cd AccelerometerApp
-          mkdir -p gradle/wrapper
-          cd gradle/wrapper
-          
-          # Download gradle-wrapper.jar directly from gradle distribution mirror
-          curl -s -L -o gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.2.0/gradle/wrapper/gradle-wrapper.jar
-          
-          cd ../../..
-        
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:

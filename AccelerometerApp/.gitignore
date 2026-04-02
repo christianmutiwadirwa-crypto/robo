@@ -38,6 +38,7 @@ package-lock.json
 dist/
 build/
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 
 # Misc
 .env
