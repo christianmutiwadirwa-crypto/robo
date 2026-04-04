@@ -123,8 +123,9 @@ server.listen(PORT, '0.0.0.0', () => {
   console.log(`   GET    /readings     - Get recent readings (limit=100)`);
   console.log(`   GET    /stats        - Statistics (avg, min, max, std)`);
   console.log(`   GET    /health       - Health check\n`);
-  console.log(`🌍 Test locally: http://localhost:${PORT}/status`);
-  console.log(`\n📋 Server is waiting for connections...\n`);
+  console.log(`🌍 Real-time Web Dashboard: http://localhost:${PORT}/`);
+  console.log(`   (Or use your machine's IP address to access from another device)\n`);
+  console.log(`📋 Server is waiting for connections...\n`);
 });
 
 // Graceful shutdown
