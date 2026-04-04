@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accelerometer Dashboard</title>
+    <!-- Chart.js for gorgeous plotting -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Socket.io for real-time WebSocket connection to Node.js -->
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #1e1e1e;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+        .live-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background: #2c2c2c;
+            border-radius: 8px;
+            margin: 0 10px;
+        }
+        .stat-box.x { border-bottom: 4px solid #ff5252; }
+        .stat-box.y { border-bottom: 4px solid #448aff; }
+        .stat-box.z { border-bottom: 4px solid #69f0ae; }
+        
+        .stat-label { font-size: 14px; color: #aaa; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-value { font-size: 32px; font-weight: bold; margin-top: 5px; }
+        
+        .chart-container {
+            position: relative;
+            height: 50vh;
+            width: 100%;
+        }
+        #connection-status {
+            text-align: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        .status-connected { background-color: rgba(76, 175, 80, 0.2); color: #4CAF50; }
+        .status-disconnected { background-color: rgba(244, 67, 54, 0.2); color: #f44336; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Live Accelerometer Dashboard</h1>
+        <p class="subtitle">Arduino → Bluetooth → Android → Node.js → Web</p>
+
+        <div id="connection-status" class="status-disconnected">
+            🔴 Disconnected from Server
+        </div>
+
+        <div class="live-stats">
+            <div class="stat-box x">
+                <div class="stat-label">X-Axis (Pitch)</div>
+                <div class="stat-value" id="val-x">0.00</div>
+            </div>
+            <div class="stat-box y">
+                <div class="stat-label">Y-Axis (Roll)</div>
+                <div class="stat-value" id="val-y">0.00</div>
+            </div>
+            <div class="stat-box z">
+                <div class="stat-label">Z-Axis (Gravity)</div>
+                <div class="stat-value" id="val-z">0.00</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="chart-container">
+                <canvas id="accelChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set up Chart.js
+        const ctx = document.getElementById('accelChart').getContext('2d');
+        const maxPoints = 100; // How many data points to show on screen
+        
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Array(maxPoints).fill(''),
+                datasets: [
+                    {
+                        label: 'X Axis',
+                        borderColor: '#ff5252',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        data: Array(maxPoints).fill(0),
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Y Axis',
+                        borderColor: '#448aff',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        data: Array(maxPoints).fill(0),
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Z Axis',
+                        borderColor: '#69f0ae',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        data: Array(maxPoints).fill(0),
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false, // Turn off animation for better real-time performance
+                plugins: {
+                    legend: {
+                        labels: { color: '#ffffff' }
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false // Hide X axis (it's just time)
+                    },
+                    y: {
+                        grid: { color: '#333' },
+                        ticks: { color: '#aaa' },
+                        suggestedMin: -15, // Roughly gravity range
+                        suggestedMax: 15
+                    }
+                }
+            }
+        });
+
+        // Set up Socket.io connection
+        const socket = io();
+        const statusDiv = document.getElementById('connection-status');
+
+        socket.on('connect', () => {
+            statusDiv.textContent = '🟢 Connected to Server - Waiting for Phone Data...';
+            statusDiv.className = 'status-connected';
+        });
+
+        socket.on('disconnect', () => {
+            statusDiv.textContent = '🔴 Disconnected from Server';
+            statusDiv.className = 'status-disconnected';
+        });
+
+        // Listen for new data broadcasted by server.js!
+        socket.on('new_reading', (data) => {
+            // Update big numbers
+            document.getElementById('val-x').textContent = data.x.toFixed(2);
+            document.getElementById('val-y').textContent = data.y.toFixed(2);
+            document.getElementById('val-z').textContent = data.z.toFixed(2);
+
+            statusDiv.textContent = `🟢 Receiving live data! (Total: ${data.timestamp})`;
+
+            // Shift arrays to create scrolling effect
+            chart.data.labels.push('');
+            chart.data.labels.shift();
+
+            chart.data.datasets[0].data.push(data.x);
+            chart.data.datasets[0].data.shift();
+
+            chart.data.datasets[1].data.push(data.y);
+            chart.data.datasets[1].data.shift();
+
+            chart.data.datasets[2].data.push(data.z);
+            chart.data.datasets[2].data.shift();
+
+            // Refresh chart
+            chart.update();
+        });
+    </script>
+</body>
+</html>

@@ -1,9 +1,15 @@
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+
 const app = express();
-const PORT = 3000;
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: '*' } });
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
+app.use(express.static('public')); // Serve the web dashboard
 
 // Store recent readings
 const readings = [];
@@ -32,7 +38,12 @@ app.post('/data', (req, res) => {
       readings.shift();
     }
 
-    console.log(`[${reading.receivedAt}] X: ${reading.x.toFixed(4)}m/s², Y: ${reading.y.toFixed(4)}m/s², Z: ${reading.z.toFixed(4)}m/s²`);
+    // Broadcast reading to all connected web clients
+    io.emit('new_reading', reading);
+
+    if (totalReceived % 10 === 0) {
+      console.log(`[${reading.receivedAt}] X: ${reading.x.toFixed(4)}m/s², Y: ${reading.y.toFixed(4)}m/s², Z: ${reading.z.toFixed(4)}m/s²`);
+    }
     res.json({ success: true, message: 'Data received', id: totalReceived });
   } else {
     res.status(400).json({
@@ -101,7 +112,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log('\n╔════════════════════════════════════════════════════════════╗');
   console.log('║     Accelerometer Data Server Running                     ║');
   console.log('╚════════════════════════════════════════════════════════════╝\n');
