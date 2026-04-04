@@ -12,6 +12,9 @@ on:
       - 'AccelerometerApp/**'
   workflow_dispatch:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -43,7 +46,9 @@ jobs:
       - name: Build with Gradle
         working-directory: AccelerometerApp
         run: |
-          ./gradlew :app:assembleDebug :app:testDebugUnitTest
+          ./gradlew assembleDebug
+          ./gradlew assembleRelease
+          ./gradlew testDebugUnitTest
         
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
