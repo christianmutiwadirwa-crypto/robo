@@ -475,7 +475,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="© 2026 Zimbabwe robotics & automation"
+                android:text="© 2026 Zimbabwe robotics &amp; automation"
                 android:textSize="10sp"
                 android:textColor="@color/text_secondary"
                 android:gravity="center"
