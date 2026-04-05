@@ -22,6 +22,7 @@ import com.robotdash.accelerometer.bluetooth.BluetoothConnectionManager;
 import com.robotdash.accelerometer.data.AccelerometerDataParser;
 import com.robotdash.accelerometer.data.AccelerometerReading;
 import com.robotdash.accelerometer.network.HttpServerClient;
+import com.robotdash.accelerometer.robot.RobotCommandController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +37,17 @@ public class MainActivity extends AppCompatActivity {
     private Button btnDisconnect;
     private Button btnRefreshDevices;
     private Button btnSaveServer;
+    private Button btnForward;
+    private Button btnBackward;
+    private Button btnLeft;
+    private Button btnRight;
+    private Button btnStop;
     private TextView tvStatus;
     private TextView tvXValue;
     private TextView tvYValue;
     private TextView tvZValue;
     private TextView tvLastUpdate;
+    private TextView tvCommandStatus;
     private EditText etServerUrl;
     private ListView lvDevices;
 
@@ -48,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private BluetoothConnectionManager bluetoothManager;
     private AccelerometerDataParser dataParser;
     private HttpServerClient httpClient;
+    private RobotCommandController robotCommandController;
 
     // Data
     private List<BluetoothDevice> pairedDevices = new ArrayList<>();
@@ -72,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         dataParser = new AccelerometerDataParser();
         httpClient = new HttpServerClient(DEFAULT_SERVER_URL);
         httpClient.setSendFrequencyHz(10); // 10 Hz
+        robotCommandController = new RobotCommandController(bluetoothManager);
 
         // Set Bluetooth callback
         bluetoothManager.setCallback(new BluetoothConnectionManager.BluetoothCallback() {
@@ -94,6 +103,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Set robot command callback
+        robotCommandController.setCallback((command, success) -> {
+            runOnUiThread(() -> {
+                String status = RobotCommandController.getCommandName(command) + 
+                    (success ? " ✓" : " ✗");
+                tvCommandStatus.setText(status);
+                tvCommandStatus.setTextColor(success ? 
+                    getResources().getColor(android.R.color.holo_green_light) :
+                    getResources().getColor(android.R.color.holo_red_light));
+            });
+        });
+
         // Refresh device list on startup
         refreshDeviceList();
     }
@@ -114,11 +135,17 @@ public class MainActivity extends AppCompatActivity {
         btnDisconnect = findViewById(R.id.btnDisconnect);
         btnRefreshDevices = findViewById(R.id.btnRefreshDevices);
         btnSaveServer = findViewById(R.id.btnSaveServer);
+        btnForward = findViewById(R.id.btnForward);
+        btnBackward = findViewById(R.id.btnBackward);
+        btnLeft = findViewById(R.id.btnLeft);
+        btnRight = findViewById(R.id.btnRight);
+        btnStop = findViewById(R.id.btnStop);
         tvStatus = findViewById(R.id.tvStatus);
         tvXValue = findViewById(R.id.tvXValue);
         tvYValue = findViewById(R.id.tvYValue);
         tvZValue = findViewById(R.id.tvZValue);
         tvLastUpdate = findViewById(R.id.tvLastUpdate);
+        tvCommandStatus = findViewById(R.id.tvCommandStatus);
         etServerUrl = findViewById(R.id.etServerUrl);
         lvDevices = findViewById(R.id.lvDevices);
 
@@ -131,6 +158,13 @@ public class MainActivity extends AppCompatActivity {
         btnRefreshDevices.setOnClickListener(v -> refreshDeviceList());
         btnSaveServer.setOnClickListener(v -> saveServerUrl());
 
+        // Robot control listeners
+        btnForward.setOnClickListener(v -> robotCommandController.sendCommand(RobotCommandController.CMD_FORWARD));
+        btnBackward.setOnClickListener(v -> robotCommandController.sendCommand(RobotCommandController.CMD_BACKWARD));
+        btnLeft.setOnClickListener(v -> robotCommandController.sendCommand(RobotCommandController.CMD_LEFT));
+        btnRight.setOnClickListener(v -> robotCommandController.sendCommand(RobotCommandController.CMD_RIGHT));
+        btnStop.setOnClickListener(v -> robotCommandController.emergencyStop());
+
         // Device list adapter
         deviceAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         lvDevices.setAdapter(deviceAdapter);
@@ -142,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
         // Initial status
         tvStatus.setText("Disconnected");
         tvStatus.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+        tvCommandStatus.setText("Ready");
         btnDisconnect.setEnabled(false);
     }
 

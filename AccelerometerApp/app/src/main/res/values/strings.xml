@@ -1,11 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Accelerometer Monitor</string>
-    <string name="status_label">Status:</string>
+    <!-- App Info -->
+    <string name="app_name">ZIMBLUETOOTH</string>
+    <string name="app_subtitle">Accelerometer • Bluetooth • Commands</string>
+
+    <!-- Connection Status -->
+    <string name="status_label">Status</string>
     <string name="disconnected">Disconnected</string>
-    <string name="connecting">Connecting...</string>
+    <string name="connecting">Connecting…</string>
     <string name="connected">Connected</string>
-    <string name="connect_button">Connect</string>
-    <string name="disconnect_button">Disconnect</string>
-    <string name="refresh_button">Refresh Devices</string>
+    <string name="connection_status">Connection Status</string>
+
+    <!-- Buttons -->
+    <string name="connect_btn">✓ Connect</string>
+    <string name="disconnect_btn">✗ Disconnect</string>
+    <string name="refresh_btn">🔄 Refresh</string>
+    <string name="save_server_btn">💾 Save Server URL</string>
+
+    <!-- Device Section -->
+    <string name="paired_devices">Paired Devices</string>
+    <string name="no_devices">No paired devices found</string>
+
+    <!-- Robot Control -->
+    <string name="robot_control">Robot Movement</string>
+    <string name="forward_btn">⬆ UP</string>
+    <string name="backward_btn">⬇ DOWN</string>
+    <string name="left_btn">⬅</string>
+    <string name="right_btn">➡</string>
+    <string name="stop_btn">⊗</string>
+    <string name="command_ready">Ready</string>
+
+    <!-- Sensor Data -->
+    <string name="sensor_data">Sensor Data</string>
+    <string name="x_axis">X-Axis</string>
+    <string name="y_axis">Y-Axis</string>
+    <string name="z_axis">Z-Axis</string>
+    <string name="last_update">Last Update</string>
+
+    <!-- Server Settings -->
+    <string name="server_settings">Server Settings</string>
+    <string name="server_url_hint">http://192.168.1.100:3000/data</string>
+
+    <!-- Messages -->
+    <string name="select_device">Please select a device</string>
+    <string name="invalid_url">URL must start with http:// or https://</string>
+    <string name="url_saved">Server URL saved</string>
+    <string name="permissions_denied">Permissions denied. App may not work properly.</string>
 </resources>

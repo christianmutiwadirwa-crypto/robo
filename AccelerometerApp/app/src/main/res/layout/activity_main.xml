@@ -1,194 +1,492 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/background">
-
-    <!-- Header -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Accelerometer Data Monitor"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/primary"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"/>
-
-    <!-- Connection Status -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Status:"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Disconnected"
-            android:textSize="16sp"
-            android:textColor="@color/error"
-            android:padding="8dp"
-            android:background="@drawable/status_background"/>
-
-    </LinearLayout>
-
-    <!-- Device Selection Section -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Paired Devices"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/primary"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
-
-    <ListView
-        android:id="@+id/lvDevices"
-        android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/list_background"
-        android:padding="8dp"/>
-
-    <!-- Buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:spacing="8dp">
-
-        <Button
-            android:id="@+id/btnRefreshDevices"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Refresh"
-            android:textSize="14sp"
-            android:background="@drawable/button_background"/>
-
-        <Button
-            android:id="@+id/btnConnect"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Connect"
-            android:textSize="14sp"
-            android:background="@drawable/button_background"/>
-
-        <Button
-            android:id="@+id/btnDisconnect"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Disconnect"
-            android:textSize="14sp"
-            android:background="@drawable/button_background"/>
-
-    </LinearLayout>
-
-    <!-- Real-time Data Display -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Real-time Data"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/primary"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="12dp"/>
+    android:background="@color/background"
+    android:fillViewport="false">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/data_container"
-        android:padding="12dp"
-        android:spacing="8dp">
+        android:padding="12dp">
 
-        <TextView
-            android:id="@+id/tvXValue"
+        <!-- Header with App Title -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="X: 0.0000 m/s²"
-            android:textSize="16sp"
-            android:textColor="@color/text_primary"
-            android:padding="8dp"/>
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingVertical="16dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/header_background">
 
-        <TextView
-            android:id="@+id/tvYValue"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🤖 ZIMBLUETOOTH"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary"
+                android:gravity="center"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Accelerometer • Bluetooth • Commands"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:letterSpacing="0.05"/>
+
+        </LinearLayout>
+
+        <!-- Connection Status Card -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Y: 0.0000 m/s²"
-            android:textSize="16sp"
-            android:textColor="@color/text_primary"
-            android:padding="8dp"/>
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
-        <TextView
-            android:id="@+id/tvZValue"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="📡 Connection Status"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Disconnected"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/error"
+                android:padding="12dp"
+                android:gravity="center"
+                android:background="@drawable/status_background"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Quick Connect/Disconnect -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:spacing="8dp">
+
+                <Button
+                    android:id="@+id/btnRefreshDevices"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="🔄 Refresh"
+                    android:textSize="12sp"
+                    android:background="@drawable/button_background"/>
+
+                <Button
+                    android:id="@+id/btnConnect"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="✓ Connect"
+                    android:textSize="12sp"
+                    android:background="@drawable/button_background"/>
+
+                <Button
+                    android:id="@+id/btnDisconnect"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="✗ Disconnect"
+                    android:textSize="12sp"
+                    android:background="@drawable/button_background"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Device Selection Card -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Z: 0.0000 m/s²"
-            android:textSize="16sp"
-            android:textColor="@color/text_primary"
-            android:padding="8dp"/>
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
-        <TextView
-            android:id="@+id/tvLastUpdate"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="📱 Paired Devices"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="12dp"/>
+
+            <ListView
+                android:id="@+id/lvDevices"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:background="@drawable/list_background"
+                android:padding="8dp"
+                android:dividerHeight="1dp"/>
+
+        </LinearLayout>
+
+        <!-- Robot Control Card -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Last: --:--:--"
-            android:textSize="14sp"
-            android:textColor="@color/text_secondary"
-            android:padding="8dp"/>
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🎮 Robot Movement"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/tvCommandStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ready"
+                    android:textSize="12sp"
+                    android:textColor="@color/success"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+            <!-- Directional Pad -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="8dp">
+
+                <!-- Forward -->
+                <Button
+                    android:id="@+id/btnForward"
+                    android:layout_width="120dp"
+                    android:layout_height="56dp"
+                    android:text="⬆ UP"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/button_background"
+                    android:layout_marginBottom="12dp"/>
+
+                <!-- Left, Stop, Right -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:spacing="12dp"
+                    android:layout_marginBottom="12dp">
+
+                    <Button
+                        android:id="@+id/btnLeft"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:text="⬅"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:background="@drawable/button_background"/>
+
+                    <Button
+                        android:id="@+id/btnStop"
+                        android:layout_width="80dp"
+                        android:layout_height="56dp"
+                        android:text="⊗"
+                        android:textSize="28sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/error"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:background="@drawable/button_danger_background"/>
+
+                    <Button
+                        android:id="@+id/btnRight"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:text="➡"
+                        android:textSize="24sp"
+                        android:gravity="center"
+                        android:padding="0dp"
+                        android:background="@drawable/button_background"/>
+
+                </LinearLayout>
+
+                <!-- Down -->
+                <Button
+                    android:id="@+id/btnBackward"
+                    android:layout_width="120dp"
+                    android:layout_height="56dp"
+                    android:text="⬇ DOWN"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/button_background"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <!-- Server Configuration -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Server Configuration"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/primary"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"/>
+        <!-- Real-time Data Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
 
-    <EditText
-        android:id="@+id/etServerUrl"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="http://192.168.1.100:3000/data"
-        android:inputType="textUri|textNoSuggestions"
-        android:selectAllOnFocus="true"
-        android:textSize="14sp"
-        android:padding="12dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/input_background"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="📊 Sensor Data"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="12dp"/>
 
-    <Button
-        android:id="@+id/btnSaveServer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Server URL"
-        android:textSize="16sp"
-        android:background="@drawable/button_background"/>
+            <!-- X-Axis -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="10dp">
 
-</LinearLayout>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="X-Axis"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvXValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0.0000 m/s²"
+                    android:textSize="14sp"
+                    android:textColor="@color/accent_red"
+                    android:textStyle="bold"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <!-- Y-Axis -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Y-Axis"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvYValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0.0000 m/s²"
+                    android:textSize="14sp"
+                    android:textColor="@color/accent_green"
+                    android:textStyle="bold"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <!-- Z-Axis -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Z-Axis"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_secondary"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvZValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="0.0000 m/s²"
+                    android:textSize="14sp"
+                    android:textColor="@color/accent_blue"
+                    android:textStyle="bold"
+                    android:gravity="end"/>
+
+            </LinearLayout>
+
+            <!-- Last Updated -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider"
+                android:layout_marginVertical="8dp"/>
+
+            <TextView
+                android:id="@+id/tvLastUpdate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Last: --:--:--"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="end"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+
+        <!-- Server Configuration Card -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/card_background"
+            android:padding="16dp"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="⚙️ Server Settings"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"
+                android:layout_marginBottom="12dp"/>
+
+            <EditText
+                android:id="@+id/etServerUrl"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:hint="http://192.168.1.100:3000/data"
+                android:inputType="textUri|textNoSuggestions"
+                android:selectAllOnFocus="true"
+                android:textSize="13sp"
+                android:paddingHorizontal="12dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/input_background"
+                android:textColorHint="@color/text_secondary"/>
+
+            <Button
+                android:id="@+id/btnSaveServer"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="💾 Save Server URL"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:background="@drawable/button_background"/>
+
+        </LinearLayout>
+
+        <!-- Bottom Padding -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="16dp"/>
+
+        <!-- Footer with Developer Credits -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingVertical="16dp"
+            android:paddingHorizontal="8dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/footer_background">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Developed by"
+                android:textSize="12sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LEWIS  •  PANASHE  •  RAYMOND"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:textColor="@color/primary"
+                android:gravity="center"
+                android:layout_marginBottom="8dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="© 2026 Zimbabwe robotics & automation"
+                android:textSize="10sp"
+                android:textColor="@color/text_secondary"
+                android:gravity="center"
+                android:letterSpacing="0.02"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
