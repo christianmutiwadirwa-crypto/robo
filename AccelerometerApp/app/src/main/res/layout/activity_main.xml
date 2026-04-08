@@ -223,6 +223,96 @@
 
     </LinearLayout>
 
+    <!-- Robot Control Section -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Robot Movement Control"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Command Status -->
+    <TextView
+        android:id="@+id/tvCommandStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ready"
+        android:textSize="14sp"
+        android:textColor="@color/success"
+        android:padding="8dp"
+        android:background="@drawable/status_background"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Direction Pad Layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="16dp">
+
+        <!-- Forward Button -->
+        <Button
+            android:id="@+id/btnForward"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="↑ Forward"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/button_background"/>
+
+        <!-- Left, Stop, Right Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:spacing="8dp">
+
+            <Button
+                android:id="@+id/btnLeft"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="← Left"
+                android:textSize="14sp"
+                android:background="@drawable/button_background"/>
+
+            <Button
+                android:id="@+id/btnStop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="⏹ Stop"
+                android:textSize="14sp"
+                android:background="@drawable/button_background"/>
+
+            <Button
+                android:id="@+id/btnRight"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="→ Right"
+                android:textSize="14sp"
+                android:background="@drawable/button_background"/>
+
+        </LinearLayout>
+
+        <!-- Backward Button -->
+        <Button
+            android:id="@+id/btnBackward"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="↓ Backward"
+            android:textSize="14sp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_background"/>
+
+    </LinearLayout>
+
     <!-- Server Configuration -->
     <TextView
         android:layout_width="match_parent"
