@@ -68,11 +68,11 @@ void setup() {
   if (!mpu.testConnection()) {
     Serial.println("ERROR: MPU6050 not detected!");
     printError("MPU6050 not detected");
-    while(1);  // Halt
+    // while(1);  // Halt
   }
   
   Serial.println("MPU6050 initialized successfully");
-  mpu.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);  // ±8g range
+  mpu.setFullScaleAccelRange(MPU6050_ACCEL_FS_8);  // Â±8g range
   
   // Small delay to ensure everything is ready
   delay(500);
@@ -81,8 +81,35 @@ void setup() {
   sendData("System initialized\n");
 }
 
+int currentSpeed = 0;
 
 void loop() {
+  // Read incoming commands from Bluetooth
+  if (btSerial.available()) {
+    String command = btSerial.readStringUntil('\n');
+    command.trim();
+    if (command.length() > 0) {
+      Serial.print("Received command: ");
+      Serial.println(command);
+      
+      if (command.startsWith("SPEED:")) {
+        currentSpeed = command.substring(6).toInt();
+        Serial.print("Speed set to: ");
+        Serial.println(currentSpeed);
+      } else if (command == "f") {
+        Serial.println("Moving Forward");
+      } else if (command == "b") {
+        Serial.println("Moving Backward");
+      } else if (command == "l") {
+        Serial.println("Turning Left");
+      } else if (command == "r") {
+        Serial.println("Turning Right");
+      } else if (command == "s") {
+        Serial.println("Stopping");
+      }
+    }
+  }
+
   // Read raw accelerometer values
   int16_t ax, ay, az;
   mpu.getAcceleration(&ax, &ay, &az);

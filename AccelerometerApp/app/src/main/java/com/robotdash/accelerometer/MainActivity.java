@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvZValue;
     private TextView tvLastUpdate;
     private TextView tvCommandStatus;
+    private TextView tvSpeedValue;
+    private SeekBar sbSpeedControl;
     private EditText etServerUrl;
     private ListView lvDevices;
 
@@ -148,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
         tvCommandStatus = findViewById(R.id.tvCommandStatus);
         etServerUrl = findViewById(R.id.etServerUrl);
         lvDevices = findViewById(R.id.lvDevices);
+        sbSpeedControl = findViewById(R.id.sbSpeedControl);
+        tvSpeedValue = findViewById(R.id.tvSpeedValue);
 
         // Set default server URL
         etServerUrl.setText(DEFAULT_SERVER_URL);
@@ -178,6 +183,25 @@ public class MainActivity extends AppCompatActivity {
         tvStatus.setTextColor(getResources().getColor(android.R.color.holo_red_light));
         tvCommandStatus.setText("Ready");
         btnDisconnect.setEnabled(false);
+
+        // Speed control listener
+        sbSpeedControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                tvSpeedValue.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Do nothing
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int finalSpeed = seekBar.getProgress();
+                robotCommandController.sendCommand("SPEED:" + finalSpeed);
+            }
+        });
     }
 
     /**

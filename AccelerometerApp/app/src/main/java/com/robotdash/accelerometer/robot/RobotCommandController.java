@@ -74,11 +74,16 @@ public class RobotCommandController {
         return success;
     }
     
-    /**
-     * Validate if the command is recognized
-     */
+    // Validate if the command is recognized
     private boolean isValidCommand(String command) {
-        return command != null && (
+        if (command == null) return false;
+        
+        // Speed commands have the prefix "SPEED:" followed by 0-9
+        if (command.startsWith("SPEED:")) {
+            return true;
+        }
+
+        return (
             command.equals(CMD_FORWARD) ||
             command.equals(CMD_BACKWARD) ||
             command.equals(CMD_LEFT) ||
@@ -91,6 +96,9 @@ public class RobotCommandController {
      * Get human-readable command name
      */
     public static String getCommandName(String command) {
+        if (command != null && command.startsWith("SPEED:")) {
+            return "Speed: " + command.substring(6);
+        }
         switch (command) {
             case CMD_FORWARD: return "Forward";
             case CMD_BACKWARD: return "Backward";
